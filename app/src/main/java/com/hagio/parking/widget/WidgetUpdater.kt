@@ -39,6 +39,13 @@ object WidgetUpdater {
         )
     }
 
+    /** 위젯을 누르면 해당 차량의 '위치 저장' 창을 띄우는 PendingIntent */
+    private fun quickParkIntent(ctx: Context, requestCode: Int, carId: String): PendingIntent =
+        PendingIntent.getActivity(
+            ctx, requestCode, QuickParkActivity.intent(ctx, carId),
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+        )
+
     fun updateSingle(ctx: Context, mgr: AppWidgetManager, widgetId: Int) {
         val views = RemoteViews(ctx.packageName, R.layout.widget_single)
         val car = ParkingRepository.getWidgetCarId(ctx, widgetId)
@@ -46,16 +53,15 @@ object WidgetUpdater {
 
         if (car == null) {
             views.setTextViewText(R.id.tv_name, "차량 없음")
-            views.setTextViewText(R.id.tv_floor, "-")
-            views.setTextViewText(R.id.tv_zone, "-")
-            views.setTextViewText(R.id.tv_date, "위젯을 길게 눌러 차량 선택")
+            views.setTextViewText(R.id.tv_date, "")
+            views.setTextViewText(R.id.tv_loc, "길게 눌러 차량 선택")
+            views.setOnClickPendingIntent(R.id.widget_root, openAppIntent(ctx, widgetId, null))
         } else {
             views.setTextViewText(R.id.tv_name, car.name)
-            views.setTextViewText(R.id.tv_floor, if (car.hasParking) car.floorLabel else "-")
-            views.setTextViewText(R.id.tv_zone, if (car.hasParking) car.zoneLabel else "-")
-            views.setTextViewText(R.id.tv_date, car.savedAtLong())
+            views.setTextViewText(R.id.tv_date, car.savedAtMedium())
+            views.setTextViewText(R.id.tv_loc, if (car.hasParking) car.locationLabel else "눌러서 저장")
+            views.setOnClickPendingIntent(R.id.widget_root, quickParkIntent(ctx, widgetId, car.id))
         }
-        views.setOnClickPendingIntent(R.id.widget_root, openAppIntent(ctx, widgetId, car?.id))
         mgr.updateAppWidget(widgetId, views)
     }
 
@@ -73,11 +79,10 @@ object WidgetUpdater {
             }
             views.setViewVisibility(rowIds[i], View.VISIBLE)
             views.setTextViewText(nameIds[i], car.name)
-            views.setTextViewText(
-                locIds[i],
-                if (car.hasParking) "${car.floorLabel} · ${car.zoneLabel}" else "미저장"
-            )
+            views.setTextViewText(locIds[i], if (car.hasParking) car.locationLabel else "미저장")
             views.setTextViewText(dateIds[i], car.savedAtShort())
+            // 각 줄을 누르면 그 차량의 위치 저장 창
+            views.setOnClickPendingIntent(rowIds[i], quickParkIntent(ctx, 200_000 + widgetId * 10 + i, car.id))
         }
 
         val extra = cars.size - rowIds.size
@@ -88,6 +93,7 @@ object WidgetUpdater {
             views.setViewVisibility(R.id.tv_more, View.GONE)
         }
 
+        // 줄 바깥(빈 곳)을 누르면 앱 열기
         views.setOnClickPendingIntent(R.id.widget_root, openAppIntent(ctx, 100_000 + widgetId, null))
         mgr.updateAppWidget(widgetId, views)
     }

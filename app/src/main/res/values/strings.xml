@@ -3,8 +3,8 @@
     <string name="config_title">위젯에 표시할 차량</string>
     <string name="widget_single_label">주차 위치 (1대)</string>
     <string name="widget_all_label">주차 위치 (전체)</string>
-    <string name="widget_single_desc">선택한 차량 1대의 주차 층·구역·날짜</string>
-    <string name="widget_all_desc">저장한 모든 차량의 주차 위치 (최대 4대)</string>
+    <string name="widget_single_desc">선택한 차량 1대의 주차 위치 · 눌러서 바로 저장</string>
+    <string name="widget_all_desc">모든 차량의 주차 위치 (최대 4대) · 줄을 눌러 저장</string>
     <string name="label_floor">층</string>
     <string name="label_zone">구역</string>
 </resources>

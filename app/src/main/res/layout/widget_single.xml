@@ -4,81 +4,49 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/widget_background"
+    android:gravity="center_vertical"
     android:orientation="vertical"
-    android:padding="14dp">
-
-    <TextView
-        android:id="@+id/tv_name"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ellipsize="end"
-        android:maxLines="1"
-        android:text="내 차"
-        android:textColor="@color/widget_accent"
-        android:textSize="13sp"
-        android:textStyle="bold" />
+    android:paddingStart="14dp"
+    android:paddingTop="8dp"
+    android:paddingEnd="14dp"
+    android:paddingBottom="8dp">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_height="wrap_content"
         android:gravity="center_vertical"
         android:orientation="horizontal">
-
-        <LinearLayout
+        <TextView
+            android:id="@+id/tv_name"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:orientation="vertical">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/label_floor"
-                android:textColor="@color/widget_sub"
-                android:textSize="11sp" />
-            <TextView
-                android:id="@+id/tv_floor"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ellipsize="end"
-                android:maxLines="1"
-                android:text="B2"
-                android:textColor="@color/widget_text"
-                android:textSize="26sp"
-                android:textStyle="bold" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="0dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="내 차"
+            android:textColor="@color/widget_accent"
+            android:textSize="12sp"
+            android:textStyle="bold" />
+        <TextView
+            android:id="@+id/tv_date"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="vertical">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/label_zone"
-                android:textColor="@color/widget_sub"
-                android:textSize="11sp" />
-            <TextView
-                android:id="@+id/tv_zone"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ellipsize="end"
-                android:maxLines="1"
-                android:text="A-13"
-                android:textColor="@color/widget_text"
-                android:textSize="26sp"
-                android:textStyle="bold" />
-        </LinearLayout>
+            android:layout_marginStart="6dp"
+            android:maxLines="1"
+            android:text="11.23(월) 09:04"
+            android:textColor="@color/widget_sub"
+            android:textSize="10sp" />
     </LinearLayout>
 
     <TextView
-        android:id="@+id/tv_date"
+        android:id="@+id/tv_loc"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
         android:ellipsize="end"
         android:maxLines="1"
-        android:text="11월 23일 (월) 09:04"
-        android:textColor="@color/widget_sub"
-        android:textSize="11sp" />
+        android:text="B2층 · A-13"
+        android:textColor="@color/widget_text"
+        android:textSize="22sp"
+        android:textStyle="bold" />
 </LinearLayout>

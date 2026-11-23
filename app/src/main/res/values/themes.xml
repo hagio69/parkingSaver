@@ -3,4 +3,14 @@
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:windowBackground">@color/app_bg</item>
     </style>
+
+    <!-- 위젯에서 띄우는 '위치 저장' 창: 앱 화면 없이 홈 화면 위에 대화상자만 표시 -->
+    <style name="Theme.ParkingSaver.Quick" parent="android:Theme.Material.Light.NoActionBar">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:backgroundDimEnabled">true</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+    </style>
 </resources>

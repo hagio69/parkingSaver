@@ -19,6 +19,16 @@
             </intent-filter>
         </activity>
 
+        <!-- 위젯을 눌렀을 때 뜨는 '위치 저장' 창 -->
+        <activity
+            android:name=".widget.QuickParkActivity"
+            android:exported="false"
+            android:excludeFromRecents="true"
+            android:noHistory="true"
+            android:taskAffinity=""
+            android:theme="@style/Theme.ParkingSaver.Quick"
+            android:windowSoftInputMode="adjustResize" />
+
         <!-- 1대용 위젯을 놓을 때 어떤 차량을 보여줄지 고르는 화면 -->
         <activity
             android:name=".widget.WidgetConfigActivity"

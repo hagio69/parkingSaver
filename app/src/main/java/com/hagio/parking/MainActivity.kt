@@ -22,7 +22,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.MoreVert
-import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
@@ -35,7 +34,9 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -61,11 +62,19 @@ class MainActivity : ComponentActivity() {
     /** 위젯을 눌러 들어왔을 때 강조할 차량 */
     private var highlightId by mutableStateOf<String?>(null)
 
+    /** 화면에 돌아올 때마다 증가 → 위젯에서 바꾼 내용도 목록에 반영 */
+    private var resumeCount by mutableIntStateOf(0)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         highlightId = intent.getStringExtra(EXTRA_CAR_ID)
-        setContent { ParkingTheme { ParkingScreen(highlightId) } }
+        setContent { ParkingTheme { ParkingScreen(highlightId, resumeCount) } }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        resumeCount++
     }
 
     override fun onNewIntent(intent: Intent) {
@@ -85,11 +94,12 @@ private sealed interface DialogState {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun ParkingScreen(highlightId: String?) {
+private fun ParkingScreen(highlightId: String?, resumeCount: Int) {
     val ctx = LocalContext.current
     var cars by remember { mutableStateOf(ParkingRepository.getCars(ctx)) }
     var dialog by remember { mutableStateOf<DialogState?>(null) }
     fun reload() { cars = ParkingRepository.getCars(ctx); dialog = null }
+    LaunchedEffect(resumeCount) { cars = ParkingRepository.getCars(ctx) }
 
     Scaffold(
         topBar = { TopAppBar(title = { Text("주차 위치") }) },
@@ -164,6 +174,7 @@ private fun ParkingScreen(highlightId: String?) {
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun CarCard(
     car: Car,
@@ -174,7 +185,9 @@ private fun CarCard(
     onDelete: () -> Unit,
 ) {
     var menu by remember { mutableStateOf(false) }
+    // 카드 아무 곳이나 누르면 위치 저장 창
     Card(
+        onClick = onPark,
         modifier = Modifier.fillMaxWidth(),
         border = if (highlighted) BorderStroke(2.dp, MaterialTheme.colorScheme.primary) else null,
     ) {
@@ -212,10 +225,12 @@ private fun CarCard(
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
-            Spacer(Modifier.height(12.dp))
-            Button(onClick = onPark, modifier = Modifier.fillMaxWidth().padding(end = 12.dp)) {
-                Text(if (car.hasParking) "새 위치로 저장" else "주차 위치 저장")
-            }
+            Spacer(Modifier.height(8.dp))
+            Text(
+                "눌러서 위치 저장",
+                style = MaterialTheme.typography.labelSmall,
+                color = MaterialTheme.colorScheme.primary,
+            )
         }
     }
 }

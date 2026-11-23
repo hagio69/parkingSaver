@@ -30,6 +30,14 @@ data class Car(
         if (!hasParking) "저장된 위치 없음"
         else SimpleDateFormat("M월 d일 (E) HH:mm", Locale.KOREA).format(Date(savedAt))
 
+    /** 예: "B2층 · A-13" */
+    val locationLabel: String get() = "$floorLabel · $zoneLabel"
+
+    /** 예: "11.23(월) 09:04" — 2×1 위젯용 */
+    fun savedAtMedium(): String =
+        if (!hasParking) "미저장"
+        else SimpleDateFormat("M.d(E) HH:mm", Locale.KOREA).format(Date(savedAt))
+
     /** 예: "11.23 09:04" — 전체 위젯처럼 좁은 곳용 */
     fun savedAtShort(): String =
         if (!hasParking) "-"
