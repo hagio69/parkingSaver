@@ -1,0 +1,8 @@
+<resources>
+    <color name="app_bg">#FF121417</color>
+    <color name="widget_bg">#FF1F2329</color>
+    <color name="widget_text">#FFF3F4F6</color>
+    <color name="widget_sub">#FF9CA3AF</color>
+    <color name="widget_accent">#FF60A5FA</color>
+    <color name="widget_divider">#FF374151</color>
+</resources>
